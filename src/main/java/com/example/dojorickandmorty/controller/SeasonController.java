@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(value = "https://krzt96.github.io/rickmorty/")
+@CrossOrigin()
 public class SeasonController {
     private final EpisodeService episodeService;
     private final SeasonService seasonService;
