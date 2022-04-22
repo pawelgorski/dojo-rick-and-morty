@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ResultLightweightDto {
-    private List<EpisodeLightweightDto> episodeDtos;
+public class EpisodeLightDto {
+    private int id;
+    private String episode;
 }

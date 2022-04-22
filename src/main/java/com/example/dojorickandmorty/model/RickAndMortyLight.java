@@ -11,10 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EpisodeLightweightDto {
-    private int id;
-    private String name;
-    private String air_date;
-    private String episode;
-    private List<String> characters;
+public class RickAndMortyLight {
+    private InfoDto info;
+    private List<EpisodeLightDto> results;
 }
