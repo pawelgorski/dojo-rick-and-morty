@@ -13,5 +13,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EpisodeLightDto {
     private int id;
+    private String name;
     private String episode;
+    private String air_date;
 }

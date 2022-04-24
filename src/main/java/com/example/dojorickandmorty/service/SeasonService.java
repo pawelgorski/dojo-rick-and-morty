@@ -2,6 +2,7 @@ package com.example.dojorickandmorty.service;
 
 import com.example.dojorickandmorty.model.*;
 import com.example.dojorickandmorty.model.Character;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,7 +13,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Service
+//@Slf4j
 public class SeasonService {
+    public static final String CHARACTERS_URL = "https://rickandmortyapi.com/api/character/";
     private final RestTemplate restTemplate = new RestTemplate();
 
     public List<SeasonStats> getNumberOfEpisodesInSeason(List<EpisodeLightDto> episodes) {
@@ -44,14 +47,33 @@ public class SeasonService {
             int season = Integer.parseInt(String.valueOf(episode.getEpisode().subSequence(1, 3)));
             if (season == id) {
                 List<Character> characters = new ArrayList<>();
+                StringBuilder characterNumbers = new StringBuilder();
 
                 List<String> characterUrls = episode.getCharacters();
 
                 for(String charUrl : characterUrls) {
-                    ResponseEntity<Character> responseEntity =
-                            restTemplate.getForEntity(charUrl, Character.class);
-                    characters.add(responseEntity.getBody());
+                     int i = charUrl.length() -1;
+                     while(charUrl.charAt(i) >= '0' && charUrl.charAt(i) <= '9') {
+                         i--;
+                     }
+                     int characterNumber = Integer.parseInt(charUrl.substring(i+1));
+                    characterNumbers.append(characterNumber);
+                    characterNumbers.append(",");
                 }
+                characterNumbers.substring(0,characterNumbers.length() - 1);
+                String getCharsUrl = CHARACTERS_URL + characterNumbers;
+//                log.info(getCharsUrl);
+
+                ResponseEntity<Character[]> responseEntity =
+                            restTemplate.getForEntity(getCharsUrl, Character[].class);
+                characters.addAll(List.of(responseEntity.getBody()));
+//                List<String> characterUrls = episode.getCharacters();
+
+//                for(String charUrl : characterUrls) {
+//                    ResponseEntity<Character> responseEntity =
+//                            restTemplate.getForEntity(charUrl, Character.class);
+//                    characters.add(responseEntity.getBody());
+//                }
 
                 EpisodeFullDto episodeFullDto = EpisodeFullDto.builder()
                         .id(episode.getId())
