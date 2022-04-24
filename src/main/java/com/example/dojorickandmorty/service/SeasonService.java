@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @Service
-//@Slf4j
 public class SeasonService {
     public static final String CHARACTERS_URL = "https://rickandmortyapi.com/api/character/";
     private final RestTemplate restTemplate = new RestTemplate();
@@ -62,18 +61,11 @@ public class SeasonService {
                 }
                 characterNumbers.substring(0,characterNumbers.length() - 1);
                 String getCharsUrl = CHARACTERS_URL + characterNumbers;
-//                log.info(getCharsUrl);
+
 
                 ResponseEntity<Character[]> responseEntity =
                             restTemplate.getForEntity(getCharsUrl, Character[].class);
                 characters.addAll(List.of(responseEntity.getBody()));
-//                List<String> characterUrls = episode.getCharacters();
-
-//                for(String charUrl : characterUrls) {
-//                    ResponseEntity<Character> responseEntity =
-//                            restTemplate.getForEntity(charUrl, Character.class);
-//                    characters.add(responseEntity.getBody());
-//                }
 
                 EpisodeFullDto episodeFullDto = EpisodeFullDto.builder()
                         .id(episode.getId())

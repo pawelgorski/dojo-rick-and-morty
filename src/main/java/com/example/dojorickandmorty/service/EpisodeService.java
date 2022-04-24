@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-//@Slf4j
 public class EpisodeService {
     public static final String RICK_AND_MORTY_URL = "https://rickandmortyapi.com/api/episode?page={id}";
     private final RestTemplate restTemplate = new RestTemplate();
