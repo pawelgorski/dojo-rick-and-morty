@@ -13,11 +13,11 @@ import java.util.List;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EpisodeDto {
-    private int id;
+    private int id; //TODO validation on setters
     private String name;
     private String air_date;
     private String episode;
-    private List<String> characters;
+    private List<String> characters; // TODO why list of Strings and not Characters?
 //    private String url;
 //    private String created;
 }

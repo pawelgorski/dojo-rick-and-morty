@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Character {
-    private int id;
-    private String name;
+    private int id; // TODO verification on setter -> can id be <0?
+    private String name; // TODO can name be empty or made of 0-9!@# chars?
     private String image;
 }

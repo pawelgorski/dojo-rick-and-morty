@@ -15,8 +15,10 @@ public class EpisodeService {
     public static final String RICK_AND_MORTY_URL = "https://rickandmortyapi.com/api/episode?page={id}";
     private final RestTemplate restTemplate = new RestTemplate();
 
+    //FIXME copied code - extract into methods
+
     public List<EpisodeLightDto> getAllEpisodes() {
-        String id = String.valueOf(1);
+        String id = String.valueOf(1); // FIXME why is it a String and not a int?
         ResponseEntity<RickAndMortyLight> responseEntity =
                 restTemplate.getForEntity(RICK_AND_MORTY_URL, RickAndMortyLight.class, id);
 

@@ -14,6 +14,6 @@ import java.util.List;
 public class EpisodeLightDto {
     private int id;
     private String name;
-    private String episode;
-    private String air_date;
+    private String episode; // TODO why String? what does this variable contain?
+    private String air_date; // TODO why String and not Date?
 }

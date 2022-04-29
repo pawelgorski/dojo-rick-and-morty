@@ -12,6 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Season {
-    private int season;
+    private int season; // TODO what does this variable hold? is it the season number? id?
     private List<EpisodeFullDto> episodes;
 }

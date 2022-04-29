@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EpisodeFullDto {
-    private int id;
+    private int id; // TODO validation on setters
     private String name;
     private String air_date;
     private String episode;

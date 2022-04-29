@@ -12,6 +12,6 @@ import lombok.Setter;
 public class InfoDto {
     private int count;
     private int pages;
-    private String next;
+    private String next; // TODO name should be more descriptive - nextUrl maybe?
     private String prev;
 }
