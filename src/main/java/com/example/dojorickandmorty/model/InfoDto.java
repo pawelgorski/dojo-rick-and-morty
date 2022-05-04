@@ -1,6 +1,7 @@
 package com.example.dojorickandmorty.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,8 +11,5 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InfoDto {
-    private int count;
     private int pages;
-    private String next; // TODO name should be more descriptive - nextUrl maybe?
-    private String prev;
 }

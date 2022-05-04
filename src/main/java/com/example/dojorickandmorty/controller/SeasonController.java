@@ -1,7 +1,6 @@
 package com.example.dojorickandmorty.controller;
 
 import com.example.dojorickandmorty.model.EpisodeDto;
-import com.example.dojorickandmorty.model.EpisodeLightDto;
 import com.example.dojorickandmorty.model.Season;
 import com.example.dojorickandmorty.model.SeasonStats;
 import com.example.dojorickandmorty.service.EpisodeService;
@@ -29,16 +28,16 @@ public class SeasonController {
 
     @GetMapping("/seasons")
     public ResponseEntity<List<SeasonStats>> getSeasonStats() {
-        List<EpisodeLightDto> listOfEpisodes = episodeService.getAllEpisodes();
+        List<EpisodeDto> listOfEpisodes = episodeService.getAllEpisodes();
         List<SeasonStats> result = seasonService.getNumberOfEpisodesInSeason(listOfEpisodes);
-        return new ResponseEntity<List<SeasonStats>>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/seasons/{id}")
     public ResponseEntity<Season> getEpisodesOfSeason(@PathVariable int id) {
-        List<EpisodeDto> listOfEpisodes = episodeService.getAllEpisodesFull();
+        List<EpisodeDto> listOfEpisodes = episodeService.getAllEpisodes();
         Season result = seasonService.getEpisodesOfSeason(id, listOfEpisodes);
-        return new ResponseEntity<Season>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 

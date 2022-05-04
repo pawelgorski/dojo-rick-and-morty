@@ -10,6 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SeasonStats {
-    private int season;
-    private int numOfEpisodes;
+    private int numberOfSeason;
+    private int numberOfEpisodes;
 }

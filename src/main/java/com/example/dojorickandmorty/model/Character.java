@@ -1,16 +1,32 @@
 package com.example.dojorickandmorty.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Character {
-    private int id; // TODO verification on setter -> can id be <0?
-    private String name; // TODO can name be empty or made of 0-9!@# chars?
+    private int id;
+    private String name;
+    @Setter
     private String image;
+
+    public void setId(int id) {
+        if(id <= 0) throw new RuntimeException("Id of character should be greater or equal 1.");
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        if(name.isEmpty() || name.isBlank()) throw new
+                RuntimeException("Name of character should not be blank or empty.");
+        this.name = name;
+    }
 }

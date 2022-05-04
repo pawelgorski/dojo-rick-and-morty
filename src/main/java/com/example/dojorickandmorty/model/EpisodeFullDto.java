@@ -9,14 +9,24 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class EpisodeFullDto {
-    private int id; // TODO validation on setters
+    private int id;
     private String name;
+    @Setter
     private String air_date;
-    private String episode;
+    @Setter
+    private String seasonAndEpisode;
+    @Setter
     private List<Character> characters;
-//    private String url;
-//    private String created;
+
+    public void setId(int id) {
+        if (id <= 0) throw new RuntimeException("Id of episode should be greater or equal 1.");
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        if (name.isEmpty() || name.isBlank()) throw new
+                RuntimeException("Name of episode should not be blank or empty.");
+        this.name = name;
+    }
 }
