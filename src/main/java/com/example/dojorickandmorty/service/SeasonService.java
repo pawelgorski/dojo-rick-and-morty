@@ -2,41 +2,40 @@ package com.example.dojorickandmorty.service;
 
 import com.example.dojorickandmorty.model.Character;
 import com.example.dojorickandmorty.model.*;
+import com.example.dojorickandmorty.model.dto.EpisodeFullDto;
+import com.example.dojorickandmorty.model.dto.SeasonStatsDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class SeasonService {
     public static final String CHARACTERS_URL = "https://rickandmortyapi.com/api/character/";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public List<SeasonStats> getNumberOfEpisodesInSeason(List<EpisodeDto> episodes) {
+    public List<SeasonStatsDto> getNumberOfEpisodesInSeason(List<Episode> episodes) {
         if (episodes.isEmpty()) return null;
         Map<Integer, Integer> numOfEpisodesInSeason = getMapOfNumberOfEpisodesInSeason(episodes);
         return getListOfSeasonStats(numOfEpisodesInSeason);
     }
 
-    private List<SeasonStats> getListOfSeasonStats
+    private List<SeasonStatsDto> getListOfSeasonStats
             (Map<Integer, Integer> numOfEpisodesInSeason){
 
-        List<SeasonStats> stats = new ArrayList<>();
+        List<SeasonStatsDto> stats = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : numOfEpisodesInSeason.entrySet()) {
-            SeasonStats stat = new SeasonStats(entry.getKey(), entry.getValue());
+            SeasonStatsDto stat = new SeasonStatsDto(entry.getKey(), entry.getValue());
             stats.add(stat);
         }
         return stats;
     }
 
-    private Map<Integer,Integer> getMapOfNumberOfEpisodesInSeason(List<EpisodeDto> episodes){
+    private Map<Integer,Integer> getMapOfNumberOfEpisodesInSeason(List<Episode> episodes){
         Map<Integer, Integer> numOfEpisodesInSeason = new TreeMap<>();
 
-        for (EpisodeDto episode : episodes) {
+        for (Episode episode : episodes) {
             int season = getSeasonNumber(episode); // fixme this is the consequence of holding ints in strings
             if (numOfEpisodesInSeason.containsKey(season)) {
                 numOfEpisodesInSeason.merge(season, 1, Integer::sum);
@@ -47,36 +46,25 @@ public class SeasonService {
         return numOfEpisodesInSeason;
     }
 
-    public Season getEpisodesOfSeason(int seasonId, List<EpisodeDto> episodes) {
-        if(seasonId < 1) throw new RuntimeException("Id should be a positive number");
+    public Season getEpisodesOfSeason(int seasonId, List<Episode> episodes) {
         List<EpisodeFullDto> episodeDtos = new ArrayList<>();
-        for (EpisodeDto episode : episodes) {
-            int season = getSeasonNumber(episode); // FIXME
+        for (Episode episode : episodes) {
+            int season = getSeasonNumber(episode);
             if (season == seasonId) {
 
-                List<Character> characters = new ArrayList<>();
-                StringBuilder characterNumbers = new StringBuilder();
+                List<Character> characters;
 
-                List<String> characterUrls = episode.getCharacterUrls();
-                //FIXME divide into smaller methods
-                for (String charUrl : characterUrls) {
-                    int i = charUrl.length() - 1;
-                    // FIXME magic numbers that are chars - two issues
-                    while (charUrl.charAt(i) >= '0' && charUrl.charAt(i) <= '9') {
-                        i--;
-                    }
-                    int characterNumber = Integer.parseInt(charUrl.substring(i + 1));
-                    characterNumbers.append(characterNumber);
-                    characterNumbers.append(",");
-                }
-                String substring = characterNumbers.substring(0, characterNumbers.length() - 1);
-                String getCharsUrl = CHARACTERS_URL + substring;
-
+                String charsUrl = getCharactersUrl(episode);
 
                 ResponseEntity<Character[]> responseEntity =
-                        restTemplate.getForEntity(getCharsUrl, Character[].class);
-                //FIXME potential Null Pointer Exception
-                characters.addAll(List.of(responseEntity.getBody()));
+                        restTemplate.getForEntity(charsUrl, Character[].class);
+
+                if(responseEntity.hasBody()) {
+                    characters = new ArrayList<>(List.of(Objects
+                            .requireNonNull(responseEntity.getBody())));
+                } else {
+                    throw new RuntimeException("Response body is null!");
+                }
 
                 EpisodeFullDto episodeFullDto = EpisodeFullDto.builder()
                         .id(episode.getId())
@@ -93,7 +81,32 @@ public class SeasonService {
         return new Season(seasonId, episodeDtos);
     }
 
-    private int getSeasonNumber(EpisodeDto episode) {
+    private String getCharactersUrl(Episode episode){
+        StringBuilder characterNumbers = new StringBuilder();
+        characterNumbers.append(CHARACTERS_URL);
+
+        List<String> characterUrls = episode.getCharacterUrls();
+
+        for (String charUrl : characterUrls) {
+            int charNumber = Integer.parseInt(charUrl.substring(charUrl.lastIndexOf('/') + 1));
+            characterNumbers.append(charNumber);
+            characterNumbers.append(",");
+        }
+        characterNumbers.deleteCharAt(characterNumbers.length()-1);
+
+        return characterNumbers.toString();
+    }
+
+    private int getSeasonNumber(Episode episode) {
         return Integer.parseInt(String.valueOf(episode.getSeasonAndEpisode().subSequence(1, 3)));
+    }
+
+    public int getGreatestSeasonNumber(List<Episode> listOfEpisodes) {
+        int greatestSeasonNumber = 1;
+        for(Episode episode : listOfEpisodes) {
+            greatestSeasonNumber = Math.max(greatestSeasonNumber,
+                    getSeasonNumber(episode));
+        }
+        return greatestSeasonNumber;
     }
 }

@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.awt.image.Kernel;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,14 +13,14 @@ public class EpisodeService {
     public static final String RICK_AND_MORTY_URL = "https://rickandmortyapi.com/api/episode?page={id}";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public List<EpisodeDto> getAllEpisodes() {
+    public List<Episode> getAllEpisodes() {
         int id = 1;
         ResponseEntity<RickAndMorty> responseEntity =
                 restTemplate.getForEntity(RICK_AND_MORTY_URL, RickAndMorty.class, id);
 
         RickAndMorty rickAndMorty = responseEntity.getBody();
 
-        List<EpisodeDto> episodes;
+        List<Episode> episodes;
         int pagesCounter;
         if (rickAndMorty != null) {
             episodes = rickAndMorty.getResults();

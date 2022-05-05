@@ -12,6 +12,6 @@ import java.util.List;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RickAndMorty {
-    private InfoDto info;
-    private List<EpisodeDto> results;
+    private Info info;
+    private List<Episode> results;
 }

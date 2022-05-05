@@ -1,5 +1,6 @@
 package com.example.dojorickandmorty.model;
 
+import com.example.dojorickandmorty.model.dto.EpisodeFullDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

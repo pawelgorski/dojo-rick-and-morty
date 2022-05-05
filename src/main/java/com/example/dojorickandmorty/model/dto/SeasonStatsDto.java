@@ -1,4 +1,4 @@
-package com.example.dojorickandmorty.model;
+package com.example.dojorickandmorty.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SeasonStats {
+public class SeasonStatsDto {
     private int numberOfSeason;
     private int numberOfEpisodes;
 }

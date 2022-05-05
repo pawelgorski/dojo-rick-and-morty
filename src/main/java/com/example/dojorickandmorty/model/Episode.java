@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @AllArgsConstructor
@@ -12,25 +15,15 @@ import java.util.List;
 @Setter
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EpisodeDto {
+public class Episode {
+    @NotNull(message = "Id of episode cannot be null.")
+    @Min(value = 1, message = "Id of episode should be greater or equal 1.")
     private int id;
+    @NotBlank(message = "Name of episode cannot be blank.")
     private String name;
-    @Setter
     private String air_date;
-    @Setter
     @JsonProperty("episode")
     private String seasonAndEpisode;
     @JsonProperty("characters")
     private List<String> characterUrls;
-
-    public void setId(int id) {
-        if (id <= 0) throw new RuntimeException("Id of episode should be greater or equal 1.");
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        if (name.isEmpty() || name.isBlank()) throw new
-                RuntimeException("Name of episode should not be blank or empty.");
-        this.name = name;
-    }
 }
