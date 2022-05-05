@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class DojoRickAndMortyApplication {
-
+	// Nice use of annotations for validation
 	public static void main(String[] args) {
 		SpringApplication.run(DojoRickAndMortyApplication.class, args);
 	}
